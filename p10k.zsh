@@ -64,11 +64,13 @@
     # =========================[ Line #1 ]=========================
     command_execution_time    # previous command duration
     virtualenv                # python virtual environment
+    pyenv                     # python environment (https://github.com/pyenv/pyenv)
+    node_version              # node.js version
     aws                       # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
-    context                   # user@host
+    # context                   # user@host
     time                      # current time
     # =========================[ Line #2 ]=========================
-    newline                   # \n
+    # newline                   # \n
   )
 
   # Basic style options that define the overall prompt look.
@@ -100,6 +102,40 @@
   # Don't show Python version.
   typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=false
   typeset -g POWERLEVEL9K_VIRTUALENV_{LEFT,RIGHT}_DELIMITER=
+
+  ##############################[ node_version: node.js version ]###############################
+  # Node version color.
+  typeset -g POWERLEVEL9K_NODE_VERSION_FOREGROUND=$red
+  # Show node version only when in a directory tree containing package.json.
+  typeset -g POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY=false
+  # Custom icon.
+  # typeset -g POWERLEVEL9K_NODE_VERSION_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+  ################[ pyenv: python environment (https://github.com/pyenv/pyenv) ]################
+  # Pyenv color.
+  typeset -g POWERLEVEL9K_PYENV_FOREGROUND=$blue
+  # Hide python version if it doesn't come from one of these sources.
+  typeset -g POWERLEVEL9K_PYENV_SOURCES=(shell local global)
+  # If set to false, hide python version if it's the same as global:
+  # $(pyenv version-name) == $(pyenv global).
+  typeset -g POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW=false
+  # If set to false, hide python version if it's equal to "system".
+  typeset -g POWERLEVEL9K_PYENV_SHOW_SYSTEM=true
+
+  # Pyenv segment format. The following parameters are available within the expansion.
+  #
+  # - P9K_CONTENT                Current pyenv environment (pyenv version-name).
+  # - P9K_PYENV_PYTHON_VERSION   Current python version (python --version).
+  #
+  # The default format has the following logic:
+  #
+  # 1. Display just "$P9K_CONTENT" if it's equal to "$P9K_PYENV_PYTHON_VERSION" or
+  #    starts with "$P9K_PYENV_PYTHON_VERSION/".
+  # 2. Otherwise display "$P9K_CONTENT $P9K_PYENV_PYTHON_VERSION".
+  typeset -g POWERLEVEL9K_PYENV_CONTENT_EXPANSION='${P9K_CONTENT}${${P9K_CONTENT:#$P9K_PYENV_PYTHON_VERSION(|/*)}:+ $P9K_PYENV_PYTHON_VERSION}'
+
+  # Custom icon.
+  # typeset -g POWERLEVEL9K_PYENV_VISUAL_IDENTIFIER_EXPANSION='⭐️'
 
   # Blue current directory.
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=$blue
